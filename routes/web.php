@@ -14,3 +14,12 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+Route::resource('posts', 'PostController');
+
+Route::get('/tags', 'TagController@index')->name('tags.index');
+Route::get('/tags/{tag}', 'TagController@show')->name('tags.show');
