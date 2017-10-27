@@ -8,6 +8,21 @@ use App\Models\Post;
 class Tag extends Model
 {
     /**
+     * The "booting" method of the model.
+     *
+     * @return void
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        // During the creation of a tag populate the slug field
+        \App\Models\Tag::creating(function($tag){
+            $tag->slug = str_slug($tag->name);
+        });
+    }
+    
+    /**
      * Relationships
      */
     

@@ -13,7 +13,7 @@ class CreateTaggablesTable extends Migration
      */
     public function up()
     {
-        Schema::table('taggables', function (Blueprint $table) {
+        Schema::create('taggables', function (Blueprint $table) {
             $table->integer('tag_id');
             $table->integer('taggable_id');
             $table->string('taggable_type');
@@ -27,8 +27,6 @@ class CreateTaggablesTable extends Migration
      */
     public function down()
     {
-        Schema::table('taggables', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('taggables');
     }
 }

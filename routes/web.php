@@ -11,15 +11,13 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'PostController@index')->name('home');
 
 Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
 
 Route::resource('posts', 'PostController');
 
 Route::get('/tags', 'TagController@index')->name('tags.index');
 Route::get('/tags/{tag}', 'TagController@show')->name('tags.show');
+
+Route::get('/users/{user}', 'UserController@show')->name('users.show');

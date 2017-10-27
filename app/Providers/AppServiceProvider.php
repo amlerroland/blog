@@ -14,32 +14,18 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        // Create custom polymorphic types
-        Relation::morphMap([
-            'post' => Post::class,
-        ]);
+        // View composer for archives
+        view()->composer('partials._archives', function($view){
+            $archives = \App\Models\Post::archives();
 
-        // During the creation of a post populate the stripped body field
-        \App\Models\Post::creating(function($post){
-            $post->body_stripped = strip_tags($post->body);
+            $view->with(compact('archives'));
         });
 
-        // After creation of a post populate the slug from the date and title
-        \App\Models\Post::created(function($post){
-            $post->slug = str_slug($post->created_at . '-' . $post->title);
-            $post->update();
-        });
+        // View composer for tags
+        view()->composer('partials._tags', function($view){
+            $tags = \App\Models\Tag::withCount('posts')->orderBy('posts_count', 'desc')->get()->take(5);
 
-        // During post update, update the the title and the stripped body as well
-        \App\Models\Post::updated(function($post){
-            $post->slug = str_slug($post->created_at . '-' . $post->title);
-            $post->body_stripped = strip_tags($post->body);
-            $post->update();
-        });
-
-        // During the creation of a tag populate the slug field
-        \App\Models\Tag::creating(function($tag){
-            $tag->slug = str_slug($tag->name);
+            $view->with(compact('tags'));
         }); 
     }
 

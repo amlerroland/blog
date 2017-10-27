@@ -12,9 +12,12 @@ class PostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $posts = Post::all()->sortByDesc('created_at');
+        $posts = Post::latest()
+            ->filter(request(['month', 'year']))
+            ->with('user', 'tags')
+            ->simplePaginate(10);
 
         return view('posts.index', compact('posts'));
     }
