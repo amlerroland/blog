@@ -8350,3 +8350,12 @@ button.close {
   }
 }
 
+.side-separator {
+  margin-top: 11px;
+  margin-bottom: 11px;
+}
+
+textarea {
+  resize: vertical;
+}
+

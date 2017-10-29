@@ -15,10 +15,13 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
                 <li><a href="#">About</a></li>
+                @if (Auth::check())
+                    <li><a href="{{ route('posts.create') }}">New post</a></li>
+                @endif
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                @if (!Auth::check())
-                    <li><a href="{{ route('logout') }}" onclick="e.preventDefault();document.selectElementById('logout_form').submit();">Logout</a></li>
+                @if (Auth::check())
+                    <li><a href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout_form').submit();">Logout</a></li>
                     <form action="{{ route('logout') }}" method="post" accept-charset="utf-8" id="logout_form">
                         {{ csrf_field() }}
                     </form>

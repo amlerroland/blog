@@ -10,7 +10,6 @@
         <div class="col-sm-9 blog-main">
             @yield('blog_main')
 
-            {{ $posts->links() }}
         </div><!-- /.blog-main -->
 
         <aside class="col-sm-3 ml-sm-auto blog-sidebar">

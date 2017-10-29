@@ -16,6 +16,7 @@ Route::get('/', 'PostController@index')->name('home');
 Auth::routes();
 
 Route::resource('posts', 'PostController');
+Route::get('/archives', 'PostController@archives')->name('posts.archives');
 
 Route::get('/tags', 'TagController@index')->name('tags.index');
 Route::get('/tags/{tag}', 'TagController@show')->name('tags.show');

@@ -15,17 +15,18 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         // View composer for archives
-        view()->composer('partials._archives', function($view){
-            $archives = \App\Models\Post::archives();
+        view()->composer(['partials._archives', 'posts.archives'], function($view){
+            $archives_full = \App\Models\Post::archives();
+            $archives_sliced = array_slice($archives_full, 0, 10);
 
-            $view->with(compact('archives'));
+            $view->with(compact('archives_full', 'archives_sliced'));
         });
 
         // View composer for tags
         view()->composer('partials._tags', function($view){
-            $tags = \App\Models\Tag::withCount('posts')->orderBy('posts_count', 'desc')->get()->take(5);
+            $tags_sidebar = \App\Models\Tag::withCount('posts')->orderBy('posts_count', 'desc')->orderBy('name')->get()->take(5);
 
-            $view->with(compact('tags'));
+            $view->with(compact('tags_sidebar'));
         }); 
     }
 

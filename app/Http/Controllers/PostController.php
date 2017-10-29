@@ -2,11 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Post;
+use App\Models\{Post, Tag};
 use Illuminate\Http\Request;
+use App\Http\Requests\PostCreateEditRequest;
 
 class PostController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth')->except('index', 'show', 'archives');
+    }
+    
     /**
      * Display a listing of the resource.
      *
@@ -29,7 +35,9 @@ class PostController extends Controller
      */
     public function create()
     {
-        return view('posts.create');
+        $tags = Tag::orderBy('name')->get();
+
+        return view('posts.create', compact('tags'));
     }
 
     /**
@@ -38,24 +46,31 @@ class PostController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(PostCreateEditRequest $request)
     {
-        dd($request);
-
-        // Validate the tags as well
-        $this->validate($request, [
-            'title' => 'required|min:2|max:255',
-            'body' => 'required|min:2',
-        ]);
-
         $post = new Post;
         $post->title = $request->title;
         $post->body = $request->body;
-        $post->user()->associate($request->user);
+        $post->user()->associate($request->user());
 
         $post->save();
 
         // Tags are coming here
+        $tag_array = [];
+
+        foreach ($request->tags as $key => $tag_id) {
+            if ( intval($tag_id) > 0 ) {
+                $tag_array[] = abs($tag_id);
+            } else {
+                $new_tag = new Tag;
+                $new_tag->name = $tag_id;
+
+                $new_tag->save();
+                $tag_array[] = $new_tag->id;
+            };
+        }
+
+        $post->tags()->sync($tag_array);
         
         return redirect()->route('posts.show', [$post])->withSuccess('Your post has been successfully created.');
     }
@@ -133,4 +148,10 @@ class PostController extends Controller
 
         return redirect()->route('posts.index')->withSuccess('Your post has been successfully deleted.');
     }
+
+    public function archives()
+    {
+        return view('posts.archives');
+    }
+    
 }

@@ -5,18 +5,18 @@
     </p>
 
     <p>
-        @if (strlen($post->body) > 200)
-            {!! substr($post->body, 0, 200) !!}...
+        @if (strlen($post->body) > 1000)
+            {!! substr($post->body, 0, 1000) !!}...
         @else
             {!! $post->body !!}
         @endif
     </p>
-    <a href="#">Read more</a>
+    <a href="{{ route('posts.show', [$post]) }}">Read more</a>
     <h5>Tags:</h5>
     <div>
         @foreach ($post->tags as $tag)
-            <a href="#">{{ $tag->name }}</a>
+            <a href="{{ route('tags.show', [$tag]) }}">{{ $tag->name }}</a>
         @endforeach
     </div>
-</div><!-- /.blog-post -->
+</div>
 <hr>

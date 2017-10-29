@@ -14,9 +14,9 @@ class TagController extends Controller
      */
     public function index()
     {
-        $tags = Tag::all();
+        $tags = Tag::orderBy('name')->withCount('posts')->get();
 
-        return view('tags.index', compact('tag'));
+        return view('tags.index', compact('tags'));
     }
 
     /**
@@ -48,7 +48,7 @@ class TagController extends Controller
      */
     public function show(Tag $tag)
     {
-        $posts = $tag->posts;
+        $posts = $tag->posts()->latest()->simplePaginate(10);
 
         return view('tags.show', compact('tag', 'posts'));
     }

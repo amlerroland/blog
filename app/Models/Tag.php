@@ -7,6 +7,11 @@ use App\Models\Post;
 
 class Tag extends Model
 {
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+    
     /**
      * The "booting" method of the model.
      *

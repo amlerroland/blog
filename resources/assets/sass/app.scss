@@ -7,3 +7,12 @@
 
 // Bootstrap
 @import "~bootstrap-sass/assets/stylesheets/bootstrap";
+
+.side-separator {
+    margin-top: 11px;
+    margin-bottom: 11px;
+}
+
+textarea {
+    resize: vertical;
+}
