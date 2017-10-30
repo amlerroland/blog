@@ -15,7 +15,16 @@ class DatabaseSeeder extends Seeder
         
         \DB::transaction( function() {
             $faker = \Faker\Factory::create();
-            $users = factory(\App\Models\User::class,10)->create();
+            
+            $user = App\Models\User::create([
+                'name' => 'johndoe',
+                'email' => 'test@test.com',
+                'password' => bcrypt('secret'),
+            ]);
+
+            $users = factory(\App\Models\User::class,9)->create();
+            $users->push($user);
+
             $tags = factory(\App\Models\Tag::class, 50)->create();
             $posts = factory(\App\Models\Post::class, 50)->make();
 

@@ -89,8 +89,12 @@ class Post extends Model
             ->toArray();
     }
 
-    public function ownedByUser(User $user)
+    public function ownedByUser($user)
     {
-        return $this->user->id === $user->id;
+        if ($user) {
+            return $this->user->id === $user->id;
+        }
+
+        return false;
     } 
 }
