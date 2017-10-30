@@ -96,8 +96,14 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
+        $post = Post::where('id', $post->id)->with('tags')->first();
+
+        // dd($post->tags->pluck('id')->toArray());
+
         // Remember the policy to validate that i can actually edit
-        $tags = $post->tags;
+        $this->authorize('update', $post);
+
+        $tags = Tag::orderBy('name')->get();
 
         return view('posts.edit', compact('post', 'tags'));
     }
@@ -109,25 +115,32 @@ class PostController extends Controller
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Post $post)
+    public function update(PostCreateEditRequest $request, Post $post)
     {
-        dd($request);
-        // Remember the policy to validate that i can actually edit
-
-        // Validate the tags as well
-        $this->validate($request, [
-            'title' => 'required|min:2|max:255',
-            'body' => 'required|min:2',
-        ]);
+        $this->authorize('update', $post);
 
         $post->title = $request->title;
         $post->body = $request->body;
 
-        // Remember to update the slug and the stripped body in the service provider
-
         $post->update();
 
         // Tags are coming here
+         
+        $tag_array = [];
+
+        foreach ($request->tags as $key => $tag_id) {
+            if ( intval($tag_id) > 0 ) {
+                $tag_array[] = abs($tag_id);
+            } else {
+                $new_tag = new Tag;
+                $new_tag->name = $tag_id;
+
+                $new_tag->save();
+                $tag_array[] = $new_tag->id;
+            };
+        }
+
+        $post->tags()->sync($tag_array);
         
         return redirect()->route('posts.show', [$post])->withSuccess('Your post has been successfully edited.');
     }
@@ -140,9 +153,10 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        // Remember the policy to validate that i can actually edit
+        $this->authorize('delete', $post);
         
-        // Detach the tags from the post or just set it up in the migration TEST!!!
+        // Detach the tags from the post
+        $post->tags()->detach();
         
         $post->delete();
 

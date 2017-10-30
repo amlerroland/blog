@@ -6,13 +6,9 @@
 
 
 @section('blog_main')
-    <h2>Create a new post</h2>
-    @php
-        if(!isset($post)){
-            $post = null;
-        }
-    @endphp
-    <form action="{{ route('posts.store') }}" method="post" accept-charset="utf-8">
+    <h2>Edit post</h2>
+    <form action="{{ route('posts.update', [$post]) }}" method="post" accept-charset="utf-8">
+        {{ method_field('PATCH') }}
         {{ csrf_field() }}
         <div class="form-group{{ $errors->has('title') ? ' has-error' : '' }}">
             <label for="title" class="control-label">Title</label>
@@ -24,7 +20,7 @@
 
         <div class="form-group{{ $errors->has('body') ? ' has-error' : '' }}">
             <label for="body" class="control-label">Post</label>
-            <textarea class="form-control" name="body" id="body">{{ old('body') }}</textarea>
+            <textarea class="form-control" name="body" id="body">{{ old('body') ? old('body') : $post ? $post->body : '' }}</textarea>
             @if ($errors->has('body'))
                 <span class="help-block">{{ $errors->first('body') }}</span>
             @endif
@@ -43,7 +39,11 @@
                     @endforeach
                 @else
                     @foreach ($tags as $tag)
-                        <option value="{{ $tag->id }}">{{ $tag->name }}</option>
+                        @if (in_array($tag->id, $post->tags->pluck('id')->toArray()))
+                            <option value="{{ $tag->id }}" selected="selected">{{ $tag->name }}</option>
+                        @else
+                            <option value="{{ $tag->id }}">{{ $tag->name }}</option>
+                        @endif
                     @endforeach
                 @endif
             </select>
@@ -52,7 +52,7 @@
             @endif
         </div>
         
-        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="submit" class="btn btn-primary">Update</button>
         
     </form>
 @endsection

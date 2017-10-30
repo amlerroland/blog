@@ -11,10 +11,10 @@
             {!! $post->body !!}
         </p>
         <hr>
-        <h5>Tags:</h5>
+        <h4>Tags:</h4>
         <div>
             @foreach ($tags as $tag)
-                <a href="{{ route('tags.show', [$tag]) }}">{{ $tag->name }}</a>
+                <a href="{{ route('tags.show', [$tag]) }}">{{ $tag->name }}</a>,
             @endforeach
         </div>
     </div><!-- /.blog-post -->
