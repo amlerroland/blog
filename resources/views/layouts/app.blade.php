@@ -23,7 +23,7 @@
         </header>
 
         <main role="main" class="container">
-            @include('partials.errors')
+            @include('partials._errors')
 
             @yield('content')
             

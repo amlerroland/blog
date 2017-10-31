@@ -9,6 +9,7 @@ use App\Models\{User, Tag};
 
 class Post extends Model
 {
+    // protected $with = ['user'];
 
     public function getRouteKeyName()
     {
@@ -96,5 +97,5 @@ class Post extends Model
         }
 
         return false;
-    } 
+    }
 }

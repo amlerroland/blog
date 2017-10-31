@@ -4,7 +4,6 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.4/css/select2.min.css" rel="stylesheet" />
 @endsection
 
-
 @section('blog_main')
     <h2>Create a new post</h2>
     @php
@@ -24,7 +23,7 @@
 
         <div class="form-group{{ $errors->has('body') ? ' has-error' : '' }}">
             <label for="body" class="control-label">Post</label>
-            <textarea class="form-control" name="body" id="body">{{ old('body') }}</textarea>
+            <textarea class="form-control" name="body" id="body" rows="10">{{ old('body') }}</textarea>
             @if ($errors->has('body'))
                 <span class="help-block">{{ $errors->first('body') }}</span>
             @endif

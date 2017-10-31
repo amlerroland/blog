@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Post;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class PostCreateEditRequest extends FormRequest
 {
@@ -23,8 +25,15 @@ class PostCreateEditRequest extends FormRequest
      */
     public function rules()
     {
+        $post = Post::where('title', $this->title)->first();
         return [
-            'title' => 'required|min:2|max:255',
+            'title' => [
+                'required',
+                'min:2',
+                'max:255',
+                // 'unique:posts',
+                // Rule::unique('posts')->ignore($post->id),
+            ],
             'body' => 'required|min:2',
             'tags' => 'array',
         ];
@@ -34,7 +43,6 @@ class PostCreateEditRequest extends FormRequest
     {
         return [
             'tags.array' => 'Please change the select back to an array.',
-            'tags.*'  => 'Please select a valid tag',
         ];
     }
 }

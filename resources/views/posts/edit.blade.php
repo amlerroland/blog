@@ -20,7 +20,7 @@
 
         <div class="form-group{{ $errors->has('body') ? ' has-error' : '' }}">
             <label for="body" class="control-label">Post</label>
-            <textarea class="form-control" name="body" id="body">{{ old('body') ? old('body') : $post ? $post->body : '' }}</textarea>
+            <textarea class="form-control" name="body" id="body" rows="10">{{ old('body') ? old('body') : $post ? $post->body : '' }}</textarea>
             @if ($errors->has('body'))
                 <span class="help-block">{{ $errors->first('body') }}</span>
             @endif
