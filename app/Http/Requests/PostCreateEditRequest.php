@@ -26,23 +26,41 @@ class PostCreateEditRequest extends FormRequest
     public function rules()
     {
         $post = Post::where('title', $this->title)->first();
-        return [
-            'title' => [
-                'required',
-                'min:2',
-                'max:255',
-                // 'unique:posts',
-                // Rule::unique('posts')->ignore($post->id),
-            ],
-            'body' => 'required|min:2',
-            'tags' => 'array',
-        ];
-    }
 
-    public function messages()
-    {
-        return [
-            'tags.array' => 'Please change the select back to an array.',
-        ];
+        switch ($this->method()) {
+            case 'POST': {
+                return [    
+                    'title' => [
+                        'required',
+                        'min:2',
+                        'max:255',
+                        'unique:posts'
+                    ],
+                    'body' => 'required|min:2',
+                    'tags' => 'array'
+                ];
+            }
+            case 'PUT':
+            case 'PATCH': {
+                return [
+                    'title' => [
+                        'required',
+                        'min:2',
+                        'max:255',
+                        Rule::unique('posts')->ignore($post->id)
+                    ],
+                    'body' => 'required|min:2',
+                    'tags' => 'array'
+                ];
+            }
+            default:
+            break;
+        }
+
+        public function messages()
+        {
+            return [
+                'tags.array' => 'Please change the select back to an array.',
+            ];
+        }
     }
-}
