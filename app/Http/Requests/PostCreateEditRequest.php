@@ -59,11 +59,4 @@ class PostCreateEditRequest extends FormRequest
                 break;
         }
     }
-
-    public function messages()
-    {
-        return [
-            'tags.array' => 'Please change the select back to an array.',
-        ];
-    }
 }
