@@ -53,7 +53,7 @@
         </div>
         
         <button type="submit" class="btn btn-primary">Update</button>
-        
+        <input type="hidden" name="title_original" value="{{ $post->title }}">
     </form>
 @endsection
 

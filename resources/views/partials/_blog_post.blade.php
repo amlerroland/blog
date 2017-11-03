@@ -24,9 +24,13 @@
     <a href="{{ route('posts.show', [$post]) }}">Read more</a>
     <h4>Tags:</h4>
     <div>
-        @foreach ($post->tags as $tag)
-            <a href="{{ route('tags.show', [$tag]) }}">{{ $tag->name }}</a>,
-        @endforeach
+        @if ($post->tags->count())
+            @foreach ($post->tags as $tag)
+                <a href="{{ route('tags.show', [$tag]) }}">{{ $tag->name }}</a>,
+            @endforeach
+        @else
+            <h5>No tags associated with the post</h5>
+        @endif
     </div>
 </div>
 <hr>

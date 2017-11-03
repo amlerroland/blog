@@ -128,16 +128,18 @@ class PostController extends Controller
          
         $tag_array = [];
 
-        foreach ($request->tags as $key => $tag_id) {
-            if ( intval($tag_id) > 0 ) {
-                $tag_array[] = abs($tag_id);
-            } else {
-                $new_tag = new Tag;
-                $new_tag->name = $tag_id;
+        if ($request->tags) {
+            foreach ($request->tags as $key => $tag_id) {
+                if ( intval($tag_id) > 0 ) {
+                    $tag_array[] = abs($tag_id);
+                } else {
+                    $new_tag = new Tag;
+                    $new_tag->name = $tag_id;
 
-                $new_tag->save();
-                $tag_array[] = $new_tag->id;
-            };
+                    $new_tag->save();
+                    $tag_array[] = $new_tag->id;
+                };
+            }
         }
 
         $post->tags()->sync($tag_array);

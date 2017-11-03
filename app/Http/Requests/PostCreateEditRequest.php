@@ -25,18 +25,39 @@ class PostCreateEditRequest extends FormRequest
      */
     public function rules()
     {
-        $post = Post::where('title', $this->title)->first();
-        return [
-            'title' => [
-                'required',
-                'min:2',
-                'max:255',
-                // 'unique:posts',
-                // Rule::unique('posts')->ignore($post->id),
-            ],
-            'body' => 'required|min:2',
-            'tags' => 'array',
-        ];
+        $post = Post::where('title', $this->title_original)->first();
+        
+        switch ($this->method()) {
+            case 'POST':
+                return [    
+                    'title' => [
+                        'required',
+                        'min:2',
+                        'max:255',
+                        'unique:posts'
+                    ],
+                    'body' => 'required|min:2',
+                    'tags' => 'array'
+                ];
+                break;
+
+            case 'PATCH':
+                return [
+                    'title' => [
+                        'required',
+                        'min:2',
+                        'max:255',
+                        Rule::unique('posts')->ignore($post->id)
+                    ],
+                    'body' => 'required|min:2',
+                    'tags' => 'array'
+                ];
+                break;
+            
+            default:
+                # code...
+                break;
+        }
     }
 
     public function messages()
