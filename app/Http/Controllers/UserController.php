@@ -46,7 +46,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        $posts = $user->posts()->with('tags', 'user')->simplePaginate(10);
+        $posts = $user->posts()->with('tags', 'user')->paginate(10);
 
         // dd($user);
 

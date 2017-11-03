@@ -15,10 +15,14 @@
     </p>
 
     <p>
-        @if (strlen($post->body) > 1000)
-            {!! substr($post->body, 0, 1000) !!}...
-        @else
+        @if ($post->body != $post->body_stripped)
             {!! $post->body !!}
+        @else
+            @if (strlen($post->body) > 1000)
+                {!! substr($post->body, 0, 1000) !!}...
+            @else
+                {!! $post->body !!}
+            @endif
         @endif
     </p>
     <a href="{{ route('posts.show', [$post]) }}">Read more</a>
