@@ -28,7 +28,7 @@ class AppServiceProvider extends ServiceProvider
 
         // View composer for tags
         view()->composer('partials._tags', function($view){
-            $tags_sidebar = \App\Models\Tag::withCount('posts')->orderBy('posts_count', 'desc')->orderBy('name')->get()->take(5);
+            $tags_sidebar = \App\Models\Tag::withCount('posts')->orderBy('posts_count', 'desc')->orderBy('name')->take(5)->get();
 
             $view->with(compact('tags_sidebar'));
         }); 
